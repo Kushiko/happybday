@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Legend Greet</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        background: black;
+        color: #b200ff;
+        font-family: "Share Tech Mono", monospace;
+        overflow: hidden;
+        height: 100%;
+      }
+      canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 0;
+      }
+
+      #ascii {
+        position: absolute;
+        top: 45%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        white-space: pre;
+        text-shadow: 0 0 10px #b200ff;
+        opacity: 0;
+        animation: fadeIn 4s ease-in-out forwards 2s;
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow: auto;
+        z-index: 1;
+      }
+      #message {
+        position: absolute;
+        top: 80%;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #b200ff;
+        font-size: 1.5rem;
+        text-shadow: 0 0 10px #b200ff;
+        opacity: 0;
+        animation: showMessage 2s ease-in-out forwards 9s;
+        z-index: 1;
+      }
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes showMessage {
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes showPS {
+        to {
+          opacity: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="matrix"></canvas>
+    <div id="ascii">
+      <pre>
+██░ ██  ▄▄▄       ██▓███   ██▓███ ▓██   ██▓    ▄▄▄▄    ██▓ ██▀███  ▄▄▄█████▓ ██░ ██ ▓█████▄  ▄▄▄     ▓██   ██▓
+▓██░ ██▒▒████▄    ▓██░  ██▒▓██░  ██▒▒██  ██▒   ▓█████▄ ▓██▒▓██ ▒ ██▒▓  ██▒ ▓▒▓██░ ██▒▒██▀ ██▌▒████▄    ▒██  ██▒
+▒██▀▀██░▒██  ▀█▄  ▓██░ ██▓▒▓██░ ██▓▒ ▒██ ██░   ▒██▒ ▄██▒██▒▓██ ░▄█ ▒▒ ▓██░ ▒░▒██▀▀██░░██   █▌▒██  ▀█▄   ▒██ ██░
+░▓█ ░██ ░██▄▄▄▄██ ▒██▄█▓▒ ▒▒██▄█▓▒ ▒ ░ ▐██▓░   ▒██░█▀  ░██░▒██▀▀█▄  ░ ▓██▓ ░ ░▓█ ░██ ░▓█▄   ▌░██▄▄▄▄██  ░ ▐██▓░
+░▓█▒░██▓ ▓█   ▓██▒▒██▒ ░  ░▒██▒ ░  ░ ░ ██▒▓░   ░▓█  ▀█▓░██░░██▓ ▒██▒  ▒██▒ ░ ░▓█▒░██▓░▒████▓  ▓█   ▓██▒ ░ ██▒▓░
+▒ ░░▒░▒ ▒▒   ▓▒█░▒▓▒░ ░  ░▒▓▒░ ░  ░  ██▒▒▒    ░▒▓███▀▒░▓  ░ ▒▓ ░▒▓░  ▒ ░░    ▒ ░░▒░▒ ▒▒▓  ▒  ▒▒   ▓▒█░  ██▒▒▒
+▒ ░▒░ ░  ▒   ▒▒ ░░▒ ░     ░▒ ░     ▓██ ░▒░    ▒░▒   ░  ▒ ░  ░▒ ░ ▒░    ░     ▒ ░▒░ ░ ░ ▒  ▒   ▒   ▒▒ ░▓██ ░▒░
+░  ░░ ░  ░   ▒   ░░       ░░       ▒ ▒ ░░      ░    ░  ▒ ░  ░░   ░   ░       ░  ░░ ░ ░ ░  ░   ░   ▒   ▒ ▒ ░░
+░  ░  ░      ░  ░                  ░ ░         ░       ░     ░               ░  ░  ░   ░          ░  ░░ ░
+░ ░              ░                                ░                ░ ░
+</pre
+      >
+    </div>
+    <div id="message">EBASH THE PLANET! Happy Birthday, The Legend!</div>
+    <div
+      id="ps"
+      style="
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+        color: #b200ff;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.75rem;
+        text-shadow: 0 0 6px #b200ff;
+        opacity: 0;
+        animation: showPS 2s ease-in-out forwards 9s;
+        z-index: 2;
+      "
+    >
+      P.S. На вокзале не обязательно было оставлять
+    </div>
+    <script>
+      const canvas = document.getElementById("matrix");
+      const ctx = canvas.getContext("2d");
+
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const letters =
+        "アァイィウヴエカガキギクグケゲコゴサザシジスズセソゾタダチッヂヅテデトドナニヌネノハバパヒビピフヘベペホボポマミムメモヤユヨラリルレロワヲンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".split(
+          ""
+        );
+      const fontSize = 14;
+      const columns = Math.floor(canvas.width / fontSize + 2);
+      const drops = Array.from(
+        { length: columns },
+        () => -Math.floor(Math.random() * Math.floor(canvas.height / fontSize))
+      );
+
+      function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "#0f0";
+        ctx.font = fontSize + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+          const text = letters[Math.floor(Math.random() * letters.length)];
+          ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+            drops[i] = 0;
+          drops[i]++;
+        }
+      }
+
+      setInterval(draw, 33);
+    </script>
+  </body>
+</html>
